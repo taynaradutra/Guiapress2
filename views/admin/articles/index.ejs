@@ -1,0 +1,52 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/navbar.ejs') %>
+
+<body>
+    <div class="container" id="containerTop">
+        <h3>Artigos</h3>
+        <a class="btn btn-success" href="/admin/articles/new">Criar novo artigo</a>
+        <br><br>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Título</th>
+                    <th scope="col">Slug</th>
+                    <th scope="col">Categoria</th>
+                    <th scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% articles.forEach(article => { %>
+                    <tr>
+                        <th scope="row"><%= article.id %></th>
+                        <td><%= article.title %></td>
+                        <td><%= article.slug %></td>
+                        <td><%= article.category.title %></td>
+                        <td>
+                            <a href="/admin/articles/edit/<%= article.id %>" class="btn btn-warning">Editar</a>
+    
+                            <form method="POST" action="/articles/delete" style="display: inline" onsubmit="confirmDeletion(event, this)">
+                                <input type="hidden" id="id" name="id" value="<%= article.id %>">
+                                <button class="btn btn-danger">Excluir</button>
+                            </form>
+    
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+<%- include ('../../partials/footer.ejs') %>
+
+<script>
+    function confirmDeletion(event, form) {
+        event.preventDefault();
+        var decision = confirm("Deseja excluir o artigo?");
+        if (decision) {
+            form.submit();
+        }
+    }
+</script>
